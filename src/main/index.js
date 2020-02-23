@@ -10,19 +10,17 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
+let mainWindowm
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
 function createWindow () {
-  /**
-   * Initial window options
-   */
+  /** Initial window options */
   mainWindow = new BrowserWindow({
     height: 563,
-    useContentSize: true,
     width: 1000,
+    useContentSize: true,
     nodeIntegration: true
   })
 

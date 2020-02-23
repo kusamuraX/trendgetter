@@ -11,5 +11,8 @@
 </script>
 
 <style>
-  /* CSS */
+#app{
+  background-color: rgb(53, 53, 53);
+  color: rgb(255, 255, 255);
+}
 </style>

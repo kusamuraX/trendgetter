@@ -138,11 +138,15 @@ body {
   margin-top: 0.5em;
   justify-content: start;
   overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .detail_topic_image{
   position: relative;
+  overflow: hidden;
   margin-right: 1em;
+  width: 10em;
+  height: 10em;
 }
 
 .image_filter{
@@ -160,7 +164,7 @@ body {
 }
 
 .detail_topic_image > p {
-  font: 0.7em sans-serif;
+  font: 0.8em sans-serif;
   font-weight: bold;
   position: absolute;
   top: 50%;
@@ -172,17 +176,11 @@ body {
   color: white;
 }
 
-.detail_topic_image:hover > p {
-  font: 0.8em sans-serif;
-  font-weight: bold;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translate(0%,-50%);
-  -webkit-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  margin: 0 0.5em;
-  padding: 0;
-  color: white;
+.detail_topic_image:hover > img {
+  transition-delay: 150ms;
+  -ms-transform: scale(1.3,1.3);
+  -webkit-transform: scale(1.3,1.3);
+  transform: scale(1.3,1.3);
 }
 
 main > div {
