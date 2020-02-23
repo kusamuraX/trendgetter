@@ -2,9 +2,25 @@
   <div id="wrapper">
     <main>
       <div class="news_line">
-        <div class="topic_contents" v-for="(topic,index) in topicData" :key="index">
-          <img v-if="topic.topicImage" :src="topic.topicImage">
-          <span>{{ topic.title }}</span>
+        <div class="topic_contents" v-for="(topic, index) in topicData" :key="index">
+          <div class="topic_main">
+            <img v-if="topic.topicImage" :src="topic.topicImage" />
+            <div class="topic_context">
+              <h2>
+                <a v-on:click="openTopic(index)">{{ topic.title }}</a>
+              </h2>
+              <span>{{ topic.context }}</span>
+            </div>
+          </div>
+          <div class="topic_details" v-if="topic.detailShow">
+            <div v-for="(details, index2) in topic.topicDetail" :key="index2">
+              <div v-on:click="openLink(details.topicUri)" class="detail_topic_image">
+                <img :src="details.topicImage" />
+                <div class="image_filter"></div>
+                <p v-html="details.title"></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -39,18 +55,41 @@ export default {
         for (var i = 0; i < tsd.length; i++) {
           var _trendingSearches = tsd[i]['trendingSearches']
           for (var j = 0; j < _trendingSearches.length; j++) {
-            for (var k = 0; k < _trendingSearches[j].articles.length; k++) {
-              if (this.topicData && _trendingSearches[j].articles[k].image) {
-                this.topicData.push({
-                  title: _trendingSearches[j].articles[k].title,
-                  context: _trendingSearches[j].articles[k].snippet,
-                  topicImage: _trendingSearches[j].articles[k].image.imageUrl
-                })
+            if (this.topicData && _trendingSearches[j].image) {
+              var topicDetailList = []
+              for (var k = 0; k < _trendingSearches[j].articles.length; k++) {
+                if (this.topicData && _trendingSearches[j].articles[k].image) {
+                  topicDetailList.push({
+                    title: _trendingSearches[j].articles[k].title,
+                    context: _trendingSearches[j].articles[k].snippet,
+                    topicImage: _trendingSearches[j].articles[k].image.imageUrl,
+                    topicUri: _trendingSearches[j].articles[k].url
+                  })
+                }
               }
+              this.topicData.push({
+                title: _trendingSearches[j].title.query,
+                context: _trendingSearches[j].articles[0].snippet,
+                topicImage: _trendingSearches[j].image.imageUrl,
+                topicUri: _trendingSearches[j].image.newsUrl,
+                topicDetail: topicDetailList,
+                detailShow: false
+              })
             }
           }
         }
+        console.log(this.topicData)
       }
+    },
+    openTopic: function (index) {
+      if (this.topicData[index].detailShow) {
+        this.topicData[index].detailShow = false
+      } else {
+        this.topicData[index].detailShow = true
+      }
+    },
+    openLink: function (url) {
+      window.open(url, '_blank', 'nodeIntegration=no')
     }
   }
 }
@@ -70,18 +109,80 @@ body {
 }
 
 .news_line {
+  width: 100%;
   display: flex;
+  padding: 1em;
   justify-content: space-between;
   flex-direction: column;
 }
 
-.topic_contents{
+.topic_contents {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2em;
+}
+
+.topic_context {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-left: 1em;
+}
+
+.topic_main {
   display: flex;
 }
 
-main {
+.topic_details {
   display: flex;
-  justify-content: space-between;
+  margin-top: 0.5em;
+  justify-content: start;
+  overflow-x: scroll;
+}
+
+.detail_topic_image{
+  position: relative;
+  margin-right: 1em;
+}
+
+.image_filter{
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 10em;
+  height: 10em;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.detail_topic_image > img {
+  width: 10em;
+  height: 10em;
+}
+
+.detail_topic_image > p {
+  font: 0.7em sans-serif;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translate(0%,-50%);
+  -webkit-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  margin:0 0.5em;
+  padding:0;
+  color: white;
+}
+
+.detail_topic_image:hover > p {
+  font: 0.8em sans-serif;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translate(0%,-50%);
+  -webkit-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  margin: 0 0.5em;
+  padding: 0;
+  color: white;
 }
 
 main > div {
@@ -134,4 +235,5 @@ main > div {
   color: #42b983;
   background-color: transparent;
 }
+
 </style>
