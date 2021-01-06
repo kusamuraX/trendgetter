@@ -9,7 +9,7 @@
               <h2>
                 <a v-on:click="openTopic(index)">{{ topic.title }}</a>
               </h2>
-              <span>{{ topic.context }}</span>
+              <span v-html="topic.context"></span>
             </div>
           </div>
           <div class="topic_details" v-if="topic.detailShow">
@@ -136,6 +136,7 @@ body {
 .topic_details {
   display: flex;
   margin-top: 0.5em;
+  padding: 0.5em;
   justify-content: start;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -233,5 +234,4 @@ main > div {
   color: #42b983;
   background-color: transparent;
 }
-
 </style>
